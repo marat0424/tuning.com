@@ -1,0 +1,17 @@
+.avatar-small {
+    width: 120px;
+} 
+
+.avatar-big {
+    width: 350px;
+} 
+
+.banner {
+    height: 400px;
+    width: 100%;
+}
+
+.banner img {
+    width: auto;
+    height: 100%;
+}

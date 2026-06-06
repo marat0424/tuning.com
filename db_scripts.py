@@ -175,10 +175,10 @@ if __name__ == "__main__":
     # ЦПГ (Категория 1)
     add_product(1, 'ЦПГ Malossi Sport 70cc (Minarelli)',
                 'Чугунный цилиндр, отличный ресурс и дикий подрыв с низов! Подходит на Yamaha Jog/Aerox.', '5 900 грн.',
-                'malossi_sport.png')
+                'malossi_sport.jpg')
     add_product(1, 'ЦПГ Athena Racing 70cc (Minarelli)',
                 'Алюминий/никасиль для любителей выжать максимум оборотов. Требует карбюратор от 17.5мм.', '8 200 грн.',
-                'athena_racing.png')
+                'athena_racing.jpg')
 
     # Трансмиссия (Категория 2)
     add_product(2, 'Вариатор Stage6 R/T Oversize',
@@ -191,7 +191,7 @@ if __name__ == "__main__":
     # Выхлоп (Категория 3)
     add_product(3, 'Выхлопная труба Yasuni R Black',
                 'Легендарный саксофон для класса Sport/Mid-Race. Раскрывает весь потенциал 70cc поршневой.',
-                '9 800 грн.', 'yasuni_r.png')
+                '9 800 грн.', 'yasuni_r.jpg')
     add_product(3, 'Выхлопная труба LeoVince HandMade TT',
                 'Бюджетный резонансный выхлоп для начального 50cc/70cc тюнинга.', '4 200 грн.', 'leovince_tt.jpg')
 

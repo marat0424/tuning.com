@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.name if user else "Scooter Boom" }}</title>
+    <style>
+        body { font-family: 'Arial Black', sans-serif; background-color: #121212; color: #fff; margin: 0; }
+        header { background: #ff5500; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(255,85,0,0.4); }
+        header h1 { margin: 0; font-size: 3em; letter-spacing: 2px; }
+        nav { text-align: center; margin-top: 10px; }
+        nav a { color: #fff; margin: 0 10px; text-decoration: none; border-bottom: 1px dashed #fff; }
+
+        .container { display: flex; max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+
+        /* Меню категорий */
+        .sidebar { width: 25%; background: #1e1e1e; padding: 20px; border-radius: 8px; border-left: 5px solid #ff5500; height: fit-content; }
+        .sidebar h3 { color: #ff5500; margin-top: 0; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar li { margin-bottom: 15px; }
+        .sidebar a { color: #ddd; text-decoration: none; font-size: 1.1em; transition: 0.3s; }
+        .sidebar a:hover, .sidebar a.active { color: #ff5500; padding-left: 5px; }
+
+        /* Сетка товаров */
+        .content { width: 75%; margin-left: 40px; }
+        .intro { background: #1e1e1e; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+        /* Карточка */
+        .product-card { background: #1e1e1e; border-radius: 8px; overflow: hidden; border: 1px solid #333; border-bottom: 4px solid #ff5500; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(255,85,0,0.2); }
+
+        .product-img-box { background: #2a2a2a; width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .product-img-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .product-info { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-title { font-size: 1.2em; color: #fff; margin: 0 0 10px 0; }
+        .product-desc { font-family: 'Arial', sans-serif; color: #aaa; font-size: 0.9em; line-height: 1.4; margin: 0 0 15px 0; }
+
+        .product-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+        .product-price { font-size: 1.3em; color: #ff5500; font-weight: bold; }
+        .buy-btn { background: #ff5500; color: white; border: none; padding: 8px 15px; font-family: 'Arial Black', sans-serif; font-size: 0.8em; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+        .buy-btn:hover { background: #fff; color: #ff5500; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>💥 SCOOTER BOOM 💥</h1>
+        <p>GIVE ME MORE POWER & STUNT</p>
+        <nav>
+            <a href="/index">Главная/Тюнинг</a> |
+            <a href="/about">О Мастерской</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h3>⚙️ ЗОНЫ ТЮНИНГА</h3>
+            <ul>
+                {% for cat in categories %}
+                <li>
+                    <a href="/index?category_id={{ cat.category_id }}"
+                       class="{{ 'active' if current_cat == cat.category_id }}">
+                       ● {{ cat.category_name }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="content">
+            {% if user %}
+            <div class="intro">
+                <h2>{{ user.name }}</h2>
+                <p style="font-family: 'Arial', sans-serif; color: #ccc; margin: 0;">{{ user.description_short }}</p>
+            </div>
+            {% endif %}
+
+            <div class="products-grid">
+                {% for post in posts %}
+                <div class="product-card">
+                    <div class="product-img-box">
+                        <a href="/product/{{ post.post_id }}" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                            {% if post.item_image %}
+                                <img src="{{ url_for('static', filename='images/' + post.item_image) }}" alt="{{ post.title }}">
+                            {% else %}
+                                <span style="color: #555;">Нет фото</span>
+                            {% endif %}
+                        </a>
+                    </div>
+
+                    <div class="product-info">
+                        <div>
+                            <h4 class="product-title">
+                                <a href="/product/{{ post.post_id }}" style="color: #fff; text-decoration: none; transition: 0.2s;" onmouseover="this.style.color='#ff5500'" onmouseout="this.style.color='#fff'">
+                                    {{ post.title }}
+                                </a>
+                            </h4>
+                            <p class="product-desc">{{ post.text }}</p>
+                        </div>
+
+                        <div class="product-footer">
+                            <span class="product-price">{{ post.price }}</span>
+                            <button class="buy-btn" onclick="alert('Добавлено в конфигуратор!')">В КОРЗИНУ</button>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p>В этой категории запчастей пока нет. Скоро завоз!</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

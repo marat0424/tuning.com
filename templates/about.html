@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>О мастерской | {{ user.name if user else "Scooter Boom" }}</title>
+    <style>
+        body { font-family: 'Arial Black', sans-serif; background-color: #121212; color: #fff; margin: 0; }
+        header { background: #ff5500; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(255,85,0,0.4); }
+        header h1 { margin: 0; font-size: 3em; letter-spacing: 2px; }
+        nav { text-align: center; margin-top: 10px; }
+        nav a { color: #fff; margin: 0 10px; text-decoration: none; border-bottom: 1px dashed #fff; font-size: 1.1em; }
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .about-card { background: #1e1e1e; padding: 30px; border-radius: 8px; border-top: 5px solid #ff5500; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .about-card h2 { color: #ff5500; font-size: 2em; margin-top: 0; }
+        .about-text { font-family: 'Arial', sans-serif; line-height: 1.6; color: #ddd; font-size: 1.1em; }
+        .contacts { margin-top: 30px; background: #252525; padding: 20px; border-radius: 6px; }
+        .contacts h3 { margin-top: 0; color: #ff5500; }
+        .contacts ul { list-style: none; padding: 0; font-family: 'Arial', sans-serif; }
+        .contacts li { margin: 10px 0; color: #ccc; }
+        .badge { background: #ff5500; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>💥 SCOOTER BOOM 💥</h1>
+        <p>GIVE ME MORE POWER & STUNT</p>
+        <nav><a href="/index">Главная/Тюнинг</a> | <a href="/about">О Мастерской</a></nav>
+    </header>
+    <div class="container">
+        <div class="about-card">
+            {% if user %}
+                <h2>⚡ {{ user.name }}</h2>
+                <p class="about-text">{{ user.description }}</p>
+            {% endif %}
+            <div class="contacts">
+                <h3>📞 НАШИ КОНТАКТЫ & ГАРАЖ</h3>
+                <ul>
+                    <li>📍 <strong>Адрес:</strong> Улица Гаражная, бокс №77 (приезжай на мопеде)</li>
+                    <li>📱 <strong>Телефон / Telegram:</strong> +380 (99) 777-20-26 <span class="badge">FAST REPLY</span></li>
+                    <li>⏰ <strong>Режим работы:</strong> Пн-Сб: с 12:00 до упора (пока крутим гайки)</li>
+                    <li>🔥 <strong>Спецификация:</strong> Yamaha Jog, Aerox, Slider, BWS, Honda Dio.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
