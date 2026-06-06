@@ -31,11 +31,11 @@ def execute(query, params=None):
     conn.commit()
 
 
-# Принудительное пересоздание таблиц (удаляем старые и создаем новые)
+# Принудительное пересоздание структуры таблиц
 def create_tables():
     open_db()
 
-    # Удаляем старые таблицы, чтобы сбросить структуру
+    # Удаляем старые таблицы, чтобы сбросить старую структуру блога
     execute('DROP TABLE IF EXISTS posts')
     execute('DROP TABLE IF EXISTS users')
     execute('DROP TABLE IF EXISTS categories')
@@ -61,7 +61,7 @@ def create_tables():
         )
     ''')
 
-    # Создаем таблицу товаров со ВСЕМИ необходимыми колонками
+    # Создаем таблицу товаров со всеми необходимыми колонками
     execute('''
         CREATE TABLE posts (
             post_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -89,7 +89,7 @@ def get_user():
     return user
 
 
-# Получить все категории
+# Получить все категории тюнинга
 def get_categories():
     open_db()
     cursor.execute('SELECT * FROM categories ORDER BY category_id')
@@ -98,14 +98,14 @@ def get_categories():
     return categories
 
 
-# Добавить категорию тюнинга
+# Добавить категорию
 def add_category(category_name):
     open_db()
     execute('INSERT INTO categories (category_name) VALUES (?)', [category_name])
     close_db()
 
 
-# Получить товары конкретной категории через явный JOIN
+# Получить товары категории через явный JOIN
 def get_posts(category_id):
     open_db()
     cursor.execute('''
@@ -120,7 +120,21 @@ def get_posts(category_id):
     return posts
 
 
-# Добавить товар в каталог
+# Получить один конкретный товар для расширенного просмотра
+def get_single_post(post_id):
+    open_db()
+    cursor.execute('''
+        SELECT posts.*, categories.category_name 
+        FROM posts
+        JOIN categories ON posts.category_id = categories.category_id
+        WHERE posts.post_id = ?
+    ''', [post_id])
+    post = cursor.fetchone()
+    close_db()
+    return post
+
+
+# Добавить товар в базу данных
 def add_product(category_id, title, text, price, item_image):
     open_db()
     execute('''
@@ -147,67 +161,49 @@ def setup_scooter_shop_info():
     close_db()
 
 
-# Вывести товары в консоль для проверки работы базы
-def show_posts(category_id):
-    posts = get_posts(category_id)
-    for post in posts:
-        print('Товар:', post['title'])
-        print('Цена:', post['price'])
-        print('Описание:', post['text'])
-        print('Категория:', post['category_name'])
-        print('-' * 50)
-
-
-# Главный блок запуска
+# Главный блок генерации базы данных
 if __name__ == "__main__":
-    # Сначала полностью пересоздаем чистые таблицы с правильными колонками
     create_tables()
 
-    # 1. Заполняем новые категории тюнинга
+    # 1. Добавляем категории
     add_category('Двигатель и ЦПГ')
     add_category('Трансмиссия и Вариаторы')
     add_category('Выхлопные системы')
     add_category('Стайлинг и Ходовая')
 
-    # 2. Наполняем витрину деталями (категория, Название, Описание, Цена, Картинка)
+    # 2. Наполняем товарами
     # ЦПГ (Категория 1)
     add_product(1, 'ЦПГ Malossi Sport 70cc (Minarelli)',
                 'Чугунный цилиндр, отличный ресурс и дикий подрыв с низов! Подходит на Yamaha Jog/Aerox.', '5 900 грн.',
-                'malossi_sport.jpg')
+                'malossi_sport.png')
     add_product(1, 'ЦПГ Athena Racing 70cc (Minarelli)',
                 'Алюминий/никасиль для любителей выжать максимум оборотов. Требует карбюратор от 17.5мм.', '8 200 грн.',
-                'athena_racing.jpg')
+                'athena_racing.png')
 
     # Трансмиссия (Категория 2)
     add_product(2, 'Вариатор Stage6 R/T Oversize',
                 'Увеличенный диаметр шкивов обеспечивает ровную полку момента и убирает провалы при разгоне.',
-                '4 500 грн.', 'stage6_variator.jpg')
+                '4 500 грн.', 'image_bfa7a2.png')
     add_product(2, 'Пружина торкдрайвера Malossi Red',
-                'Жесткая пружина для злых конфигов. Идеально для быстрого старта на заднее колесо.', '650 грн.',
-                'malossi_spring.jpg')
+                'Жесткая красная пружина для злых 2Т конфигов. Идеально для мгновенного старта на заднее колесо.',
+                '650 грн.', 'malossi_spring.png')
 
     # Выхлоп (Категория 3)
     add_product(3, 'Выхлопная труба Yasuni R Black',
                 'Легендарный саксофон для класса Sport/Mid-Race. Раскрывает весь потенциал 70cc поршневой.',
-                '9 800 грн.', 'yasuni_r.jpg')
+                '9 800 грн.', 'yasuni_r.png')
     add_product(3, 'Выхлопная труба LeoVince HandMade TT',
                 'Бюджетный резонансный выхлоп для начального 50cc/70cc тюнинга.', '4 200 грн.', 'leovince_tt.jpg')
 
     # Стайлинг (Категория 4)
     add_product(4, 'Вынос руля Str8 (Yamaha Aerox)',
                 'Качественный алюминиевый вынос под открытый руль. Незаменим для стант-конфига.', '1 200 грн.',
-                'str8_stem.jpg')
+                'str8_stem.png')
     add_product(4, 'Руль Str8 Кроссовый (Хром)',
                 'Широкий открытый руль для идеального контроля скутера в заносе или на заднем.', '1 500 грн.',
-                'str8_bar.jpg')
+                'str8_bar.png')
 
-    # 3. Добавляем профиль магазина
     setup_scooter_shop_info()
-
     print("=" * 60)
-    print(" БАЗА ДАННЫХ SCOOTER BOOM ПОЛНОСТЬЮ ОБНОВЛЕНА И ПЕРЕСОЗДАНА! ")
+    print(" БАЗА ДАННЫХ SCOOTER BOOM УСПЕШНО ПЕРЕСОЗДАНА И ЗАПОЛНЕНА! ")
     print("=" * 60)
-
-    print('\nПроверка базы данных: Категория "Двигатель и ЦПГ"')
-    print('-' * 50)
-    show_posts(1)

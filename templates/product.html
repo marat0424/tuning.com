@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }} | Scooter Boom</title>
+    <style>
+        body { font-family: 'Arial Black', sans-serif; background-color: #121212; color: #fff; margin: 0; }
+        header { background: #ff5500; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(255,85,0,0.4); }
+        header h1 { margin: 0; font-size: 3em; letter-spacing: 2px; }
+        nav { text-align: center; margin-top: 10px; }
+        nav a { color: #fff; margin: 0 10px; text-decoration: none; border-bottom: 1px dashed #fff; }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .back-link { display: inline-block; color: #ff5500; text-decoration: none; margin-bottom: 20px; font-size: 1.1em; }
+        .back-link:hover { text-decoration: underline; }
+
+        .product-detailed { background: #1e1e1e; border-radius: 12px; display: flex; border: 1px solid #333; overflow: hidden; border-left: 6px solid #ff5500; box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
+        .img-part { width: 45%; background: #252525; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        .img-part img { width: 100%; max-height: 400px; object-fit: contain; border-radius: 6px; }
+        .no-photo { color: #555; font-size: 1.2em; }
+
+        .info-part { width: 55%; padding: 40px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; }
+        .category-badge { background: #ff5500; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; display: inline-block; width: fit-content; margin-bottom: 15px; }
+        .product-title { font-size: 2.2em; margin: 0 0 20px 0; color: #fff; line-height: 1.2; }
+        .product-text { font-family: 'Arial', sans-serif; color: #ccc; font-size: 1.1em; line-height: 1.6; margin: 0 0 30px 0; }
+
+        .specifications { background: #252525; padding: 15px; border-radius: 6px; margin-bottom: 30px; font-family: 'Arial', sans-serif; font-size: 0.95em; color: #aaa; }
+        .specifications div { margin: 6px 0; }
+        .specifications strong { color: #fff; }
+
+        .action-bar { display: flex; align-items: center; justify-content: space-between; }
+        .product-price { font-size: 2.5em; color: #ff5500; font-weight: bold; }
+        .buy-btn { background: #ff5500; color: white; border: none; padding: 15px 30px; font-family: 'Arial Black', sans-serif; font-size: 1.1em; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .buy-btn:hover { background: #fff; color: #ff5500; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>💥 SCOOTER BOOM 💥</h1>
+        <p>GIVE ME MORE POWER & STUNT</p>
+        <nav><a href="/index">Главная/Тюнинг</a> | <a href="/about">О Мастерской</a></nav>
+    </header>
+
+    <div class="container">
+        <a href="/index?category_id={{ post.category_id }}" class="back-link">← Вернуться к каталогу</a>
+
+        <div class="product-detailed">
+            <div class="img-part">
+                {% if post.item_image %}
+                    <img src="{{ url_for('static', filename='images/' + post.item_image) }}" alt="{{ post.title }}">
+                {% else %}
+                    <span class="no-photo">Фото детали отсутствует</span>
+                {% endif %}
+            </div>
+
+            <div class="info-part">
+                <div>
+                    <span class="category-badge">Зона: {{ post.category_name }}</span>
+                    <h2 class="product-title">{{ post.title }}</h2>
+                    <p class="product-text">{{ post.text }}</p>
+
+                    <div class="specifications">
+                        <div>📦 <strong>Состояние:</strong> Новый, в оригинальной упаковке</div>
+                        <div>⚡ <strong>Класс тюнинга:</strong> Sport / Racing Stage</div>
+                        <div>📅 <strong>Дата поступления:</strong> {{ post.datetime }}</div>
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <span class="product-price">{{ post.price }}</span>
+                    <button class="buy-btn" onclick="alert('Добавлено в твой кастом-конфиг!')">В КОРЗИНУ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

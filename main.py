@@ -5,22 +5,20 @@ from db_scripts import *
 app = Flask(__name__)
 
 
+# Главная страница (Витрина товаров)
 @app.route('/')
 @app.route('/index')
 def index():
     user = get_user()
     categories = get_categories()
 
-    # 1. Смотрим, какую категорию выбрал пользователь (через GET-запрос)
-    # Если клика не было, по умолчанию берем первую категорию (id = 1)
+    # Получаем ID выбранной категории. Если не выбрана — ставим первую по умолчанию
     current_category = request.args.get('category_id', type=int)
     if not current_category and categories:
         current_category = categories[0]['category_id']
 
-    # 2. Вытягиваем товары только для этой категории
     posts = get_posts(current_category) if current_category else []
 
-    # 3. Передаем ВСЁ это в шаблон
     return render_template(
         'index.html',
         user=user,
@@ -30,6 +28,19 @@ def index():
     )
 
 
+# Страница подробного просмотра одной детали
+@app.route('/product/<int:post_id>')
+def product_page(post_id):
+    user = get_user()
+    post = get_single_post(post_id)  # Загружаем инфо об одной детали
+
+    if not post:
+        return "Деталь не найдена в каталоге!", 404
+
+    return render_template('product.html', user=user, post=post)
+
+
+# Страница о мастерской
 @app.route('/about')
 def about():
     user = get_user()

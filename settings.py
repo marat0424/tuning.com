@@ -1,11 +1,11 @@
 import os
 
-# Шлях до папки проєкту
+# Путь к папке проекта
 PATH = os.path.dirname(__file__) + os.sep
 
-# Шлях до бази даних
+# Путь к базе данных
 DB_NAME = 'blog.db'
 PATH_DB = PATH + DB_NAME
 
-# Секретний ключ
+# Секретный ключ приложения
 SECRET_KEY = 'VeryStrongKey'
