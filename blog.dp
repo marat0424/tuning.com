@@ -1,0 +1,35 @@
+
+data = [["Категории", "Цена"],
+        {"book": 58, "organization": 0, "homegum": 55, "summer": 1,
+        "win": 85189}]
+
+
+def create_table(data, header_separator=True):
+
+    header_cols = len(data[0])
+
+    # Сделал чтобы строки "Категории" и "Цена", вывводились
+    # в качестве заголовка
+    elem_col1 = [data[0][0]] + list(data[1].keys())
+    elem_col2 = [data[0][1]] + list(map(str, list(data[1].values())))
+
+    # Определяет ширину для каждого столбика
+
+    col_width = [len(max(elem_col1, key=len)),
+                 len(max(elem_col2, key=len))]
+
+    # Границы заголовков столбцов
+    separator = "-+-".join('-' * n for n in col_width)
+
+    # Создание таблицы
+    i = 0
+    for col in range(len(elem_col1)):
+        if i == 1:
+            print(separator)
+        result = [elem_col1[col].rjust(col_width[0]),
+                  elem_col2[col].rjust(col_width[1])]
+        i += 1
+        print(" | ".join(result))
+
+
+create_table(data)
